@@ -30,17 +30,18 @@ body{
 ========================= */
 .titleRow{
   position:relative;
-  padding:28px 24px 40px;
+  padding:32px 24px 48px;
   border-radius:22px;
   border:1px solid rgba(255,255,255,.08);
   background:linear-gradient(135deg, rgba(124,247,255,.08), rgba(155,123,255,.08));
   box-shadow:0 20px 60px rgba(0,0,0,.4);
+  text-align:center;
 }
 
 .title{
-  font-size:clamp(24px,7vw,36px);
+  font-size:clamp(26px,7vw,40px);
   font-weight:900;
-  letter-spacing:.06em;
+  letter-spacing:.08em;
   margin:0;
 
   background:linear-gradient(90deg,#ffffff,#7cf7ff);
@@ -57,12 +58,11 @@ body{
 .localTag{
   position:absolute;
   right:24px;
-  bottom:14px;
+  bottom:16px;
   font-size:12px;
   letter-spacing:.15em;
-  color:rgba(255,255,255,.5);
+  color:rgba(255,255,255,.55);
 }
-
 /* =========================
    PANELS
 ========================= */
