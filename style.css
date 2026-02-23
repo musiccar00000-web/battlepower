@@ -31,27 +31,26 @@ body{
 
 .titleRow{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
+  justify-content:space-between;
   gap:16px;
-  padding:20px 24px;
-  border-radius:22px;
-  border:1px solid var(--line);
-  background:linear-gradient(135deg, rgba(124,247,255,.08), rgba(155,123,255,.08));
-  box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.titleBlock{
+  display:flex;
+  flex-direction:column;
 }
 
 .title{
-  font-size: clamp(22px, 6vw, 36px);
-  font-weight: 900;
-  letter-spacing: .05em;
-  margin: 0;
-  white-space: nowrap;   /* ← 折り返し禁止 */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size:clamp(22px,6vw,34px);
+  font-weight:900;
+  letter-spacing:.05em;
+  margin:0;
+  white-space:nowrap;
 
-  background: linear-gradient(90deg,#ffffff,#7cf7ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background:linear-gradient(90deg,#ffffff,#7cf7ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
 .title .accent{
@@ -60,21 +59,11 @@ body{
   -webkit-text-fill-color:transparent;
 }
 
-.chip{
-  margin-left:auto;
+.subTitle{
   font-size:12px;
-  padding:8px 14px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(0,0,0,.2);
-  color:var(--muted);
-}
-
-.sub{
-  margin:14px 2px 0;
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.5;
+  letter-spacing:.15em;
+  margin-top:6px;
+  color:rgba(255,255,255,.5);
 }
 
 /* =========================
