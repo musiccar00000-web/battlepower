@@ -26,28 +26,66 @@ body{
 }
 
 /* =========================
-   TITLE
+   TITLE (Center) + LOCAL AI (Right, under title)
 ========================= */
 .titleRow{
   position:relative;
-  margin: 28px 0 18px;
-  padding:42px 24px 60px;   /* ← 上と下を増やす */
+  margin: 22px 0 14px;
+  padding:34px 24px 26px;
   border-radius:26px;
   border:1px solid rgba(255,255,255,.08);
-  background:linear-gradient(135deg, rgba(124,247,255,.08), rgba(155,123,255,.08));
+  background:
+    radial-gradient(900px 240px at 50% 0%, rgba(124,247,255,.18), transparent 60%),
+    radial-gradient(900px 240px at 80% 40%, rgba(155,123,255,.16), transparent 55%),
+    linear-gradient(135deg, rgba(124,247,255,.08), rgba(155,123,255,.08));
   box-shadow:0 20px 60px rgba(0,0,0,.45);
   text-align:center;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+
+  overflow:hidden;
+}
+
+/* 飾り（薄い枠のスキャン線っぽい） */
+.titleRow::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:28px;
+  background:linear-gradient(90deg, transparent, rgba(124,247,255,.18), rgba(155,123,255,.18), transparent);
+  opacity:.35;
+  filter:blur(10px);
+  pointer-events:none;
+}
+.titleRow::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  width:min(520px, 82%);
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg, transparent, rgba(124,247,255,.8), rgba(155,123,255,.8), transparent);
+  opacity:.55;
+  pointer-events:none;
 }
 
 .title{
-  font-size:clamp(26px,7vw,40px);
+  font-size:clamp(28px,7vw,46px);
   font-weight:900;
-  letter-spacing:.08em;
+  letter-spacing:.06em;
   margin:0;
+  line-height:1.12;
 
   background:linear-gradient(90deg,#ffffff,#7cf7ff);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+
+  text-shadow:0 10px 30px rgba(0,0,0,.45);
 }
 
 .title .accent{
@@ -57,18 +95,25 @@ body{
 }
 
 .localTag{
-  position:absolute;
-  right:28px;
-  bottom:22px;
-  font-size:11px;
+  /* 右寄せで「タイトルの下の段」に置く */
+  align-self:flex-end;
+  margin-top:-2px;
+
+  font-size:12px;
   letter-spacing:.18em;
-  color:rgba(255,255,255,.4);
-  font-weight:600;
+  color:rgba(255,255,255,.55);
+  font-weight:700;
+
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.18);
+  backdrop-filter: blur(8px);
 }
+
 /* =========================
    PANELS
 ========================= */
-
 .panel{
   margin-top:18px;
   padding:18px;
@@ -81,7 +126,6 @@ body{
 /* =========================
    BUTTONS
 ========================= */
-
 .fileBtn{
   display:inline-flex;
   align-items:center;
@@ -93,7 +137,6 @@ body{
   cursor:pointer;
   font-weight:600;
 }
-
 .fileBtn input{display:none;}
 
 .scanBtn{
@@ -105,7 +148,6 @@ body{
   background:linear-gradient(90deg, rgba(124,247,255,.25), rgba(155,123,255,.25));
   color:white;
 }
-
 .scanBtn:disabled{
   opacity:.4;
   cursor:not-allowed;
@@ -114,7 +156,6 @@ body{
 /* =========================
    STATUS
 ========================= */
-
 .statusBox{
   margin-top:14px;
   padding:12px 14px;
@@ -122,12 +163,10 @@ body{
   border:1px solid var(--line);
   background:rgba(0,0,0,.2);
 }
-
 .statusLabel{
   font-size:12px;
   color:var(--muted);
 }
-
 .statusText{
   font-size:15px;
   margin-top:4px;
@@ -136,22 +175,18 @@ body{
 /* =========================
    METER
 ========================= */
-
 .meterWrap{
   margin-top:18px;
 }
-
 .meterHead{
   display:flex;
   align-items:center;
   margin-bottom:10px;
 }
-
 .meterTitle{
   font-size:14px;
   color:var(--muted);
 }
-
 .meterValue{
   margin-left:auto;
   font-size:20px;
@@ -159,12 +194,10 @@ body{
   color:var(--acc);
   letter-spacing:.05em;
 }
-
 .meter{
   position:relative;
   height:64px;
 }
-
 .meterBar{
   position:absolute;
   inset:22px 6px 22px 6px;
@@ -173,14 +206,12 @@ body{
   border:1px solid var(--line);
   overflow:hidden;
 }
-
 .meterFill{
   height:100%;
   width:0%;
   background:linear-gradient(90deg,#48ff9a,#7cf7ff,#ff5b7a);
   transition:width 700ms cubic-bezier(.2,.9,.2,1);
 }
-
 .meterTicks{
   position:absolute;
   inset:0;
@@ -194,7 +225,6 @@ body{
   opacity:.25;
   pointer-events:none;
 }
-
 .meterNeedle{
   position:absolute;
   top:12px;
@@ -209,7 +239,6 @@ body{
 /* =========================
    RESULT
 ========================= */
-
 .resultRow{
   display:flex;
   align-items:baseline;
@@ -217,19 +246,16 @@ body{
   padding-top:14px;
   border-top:1px dashed rgba(255,255,255,.15);
 }
-
 .resultLabel{
   color:var(--muted);
   font-size:14px;
 }
-
 .resultValue{
   margin-left:auto;
   font-size:34px;
   font-weight:900;
   letter-spacing:.08em;
 }
-
 .unit{
   font-size:14px;
   margin-left:6px;
@@ -239,7 +265,6 @@ body{
 /* =========================
    FACTS
 ========================= */
-
 .facts{
   margin-top:14px;
   padding:14px;
@@ -247,19 +272,16 @@ body{
   border:1px solid var(--line);
   background:rgba(0,0,0,.25);
 }
-
 .factsTitle{
   font-size:13px;
   color:var(--muted);
   margin-bottom:8px;
 }
-
 .factsBody{
   font-size:14px;
   line-height:1.6;
   white-space:pre-wrap;
 }
-
 .factsNote{
   margin-top:8px;
   font-size:12px;
@@ -269,7 +291,6 @@ body{
 /* =========================
    CANVAS
 ========================= */
-
 .canvasFrame{
   margin-top:12px;
   border-radius:18px;
@@ -277,7 +298,6 @@ body{
   background:rgba(0,0,0,.25);
   border:1px solid var(--line);
 }
-
 canvas{
   width:100%;
   display:block;
@@ -300,40 +320,17 @@ canvas{
   80%{opacity:.8}
   100%{transform:translateY(600px);opacity:0}
 }
-/* --- Title (Center) + LOCAL AI (Right) --- */
-.titleRow{
-  position:relative;
-  margin: 22px 0 10px;
-  padding:32px 24px 48px;
-  border-radius:22px;
-  border:1px solid rgba(255,255,255,.08);
-  background:linear-gradient(135deg, rgba(124,247,255,.08), rgba(155,123,255,.08));
-  box-shadow:0 20px 60px rgba(0,0,0,.4);
-  text-align:center;
-}
 
-.title{
-  font-size:clamp(28px,7vw,44px);
-  font-weight:900;
-  letter-spacing:.08em;
-  margin:0;
-  background:linear-gradient(90deg,#ffffff,#7cf7ff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-.title .accent{
-  background:linear-gradient(90deg,#7cf7ff,#9b7bff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-.localTag{
-  position:absolute;
-  right:24px;
-  bottom:16px;
-  font-size:12px;
-  letter-spacing:.15em;
-  color:rgba(255,255,255,.55);
-  font-weight:600;
+/* =========================
+   Small screens
+========================= */
+@media (max-width: 420px){
+  .titleRow{
+    padding:30px 18px 22px;
+    border-radius:22px;
+  }
+  .localTag{
+    font-size:11px;
+    padding:7px 10px;
+  }
 }
