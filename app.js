@@ -32,6 +32,11 @@ function setMeter(v01, label) {
   meterValue.textContent = label ?? (pct + "%");
 }
 
+function stopScanAnim() {
+  if (scanAnim) cancelAnimationFrame(scanAnim);
+  scanAnim = null;
+}
+
 async function init() {
   status("モデル読み込み中…");
   setMeter(0.08, "LOADING");
@@ -59,6 +64,8 @@ init().catch((e) => {
 });
 
 fileEl.addEventListener("change", async () => {
+  stopScanAnim();
+
   powerEl.textContent = "---";
   rankEl.textContent = "---";
   detailEl.textContent = "画像を選択してください";
@@ -84,49 +91,56 @@ scanBtn.addEventListener("click", async () => {
   status("解析中…");
   animateScanMeter();
 
-  const result = faceLandmarker.detect(currentImageBitmap);
+  try {
+    const result = faceLandmarker.detect(currentImageBitmap);
 
-  // ★SCANNING確実停止
-  if (scanAnim) cancelAnimationFrame(scanAnim);
-  scanAnim = null;
+    if (!result.faceLandmarks || result.faceLandmarks.length === 0) {
+      status("顔が検出できませんでした。");
+      setMeter(0.05, "NO FACE");
+      powerEl.textContent = "---";
+      rankEl.textContent = "---";
+      return;
+    }
 
-  if (!result.faceLandmarks || result.faceLandmarks.length === 0) {
-    status("顔が検出できませんでした。");
-    setMeter(0.05, "NO FACE");
-    return;
+    const lm = result.faceLandmarks[0];
+    drawBitmap(currentImageBitmap);
+
+    const du = new DrawingUtils(ctx);
+    du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_FACE_OVAL);
+    du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_LEFT_EYE);
+    du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE);
+    du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_LIPS);
+
+    const metrics = computeMetrics(lm);
+    const power = toCutePower(metrics);
+
+    // メーターは 0..99999 を 0..1 に圧縮
+    const v01 = Math.max(0, Math.min(1, power / 99999));
+
+    powerEl.textContent = power;
+    rankEl.textContent = rankFromScore(power);
+
+    detailEl.textContent =
+      `対称性誤差: ${metrics.symErr.toFixed(3)}\n` +
+      `比率誤差(φ=1.618): ${metrics.ratioErr.toFixed(3)}\n` +
+      `中心ズレ: ${metrics.centerErr.toFixed(3)}\n` +
+      `（※小さいほど幾何学的に整っている）`;
+
+    status("完了");
+    setMeter(v01, `${power}pt`);
+  } catch (e) {
+    status("解析エラー: " + e.message);
+    setMeter(0.03, "ERROR");
+  } finally {
+    // ★絶対に SCANNING を止める
+    stopScanAnim();
   }
-
-  const lm = result.faceLandmarks[0];
-  drawBitmap(currentImageBitmap);
-
-  const du = new DrawingUtils(ctx);
-  du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_FACE_OVAL);
-  du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_LEFT_EYE);
-  du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_RIGHT_EYE);
-  du.drawConnectors(lm, FaceLandmarker.FACE_LANDMARKS_LIPS);
-
-  const metrics = computeMetrics(lm);
-  const power = toCutePower(metrics);
-
-  const v01 = Math.min(1, power / 99999);
-
-  powerEl.textContent = power;
-  rankEl.textContent = rankFromScore(power);
-
-  detailEl.textContent =
-    `対称性誤差: ${metrics.symErr.toFixed(3)}\n` +
-    `比率誤差(φ=1.618): ${metrics.ratioErr.toFixed(3)}\n` +
-    `中心ズレ: ${metrics.centerErr.toFixed(3)}\n` +
-    `（※小さいほど幾何学的に整っている）`;
-
-  status("完了");
-  setMeter(v01, `${power}pt`);
 });
 
 function animateScanMeter() {
-  if (scanAnim) cancelAnimationFrame(scanAnim);
-
+  stopScanAnim();
   const start = performance.now();
+
   const loop = (t) => {
     const p = ((t - start) / 900) % 1;
     const v = 0.25 + 0.60 * (0.5 - 0.5 * Math.cos(p * Math.PI * 2));
@@ -178,17 +192,16 @@ function computeMetrics(lm) {
   return { ratioErr, symErr, centerErr };
 }
 
-/* =============================
-   スコア変換（分布拡張版）
-============================= */
+// 分布：5000〜99999（低品質は5000に張り付くが、普通はちゃんと散る）
 function toCutePower(m) {
   const err = m.ratioErr * 1.2 + m.symErr * 2.0 + m.centerErr * 2.6;
 
-  const quality = Math.exp(-1.35 * err);
+  const quality = Math.exp(-1.35 * err); // 0..1
   const t = Math.pow(quality, 0.55);
 
   let pts = 5000 + Math.round(t * 45000);
 
+  // 神ゾーン（誤差が小さい時だけ一気に跳ねる）
   if (err < 0.075) {
     const bonus = (0.075 - err) * 900000;
     pts = Math.round(pts + bonus);
@@ -200,13 +213,10 @@ function toCutePower(m) {
   return pts;
 }
 
-/* =============================
-   判定ラベル
-============================= */
-function rankFromScore(s){
+function rankFromScore(s) {
   if (s >= 70000) return "神";
   if (s >= 45000) return "激ヤバ";
   if (s >= 20000) return "かわいい";
-  if (s >= 9000)  return "ふつう";
+  if (s >= 9000) return "ふつう";
   return "イマイチ";
 }
