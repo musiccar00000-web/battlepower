@@ -9,17 +9,13 @@
 <body>
   <main class="wrap">
     <header class="hero">
-<div class="titleRow">
-  <div class="titleBlock">
-    <h1 class="title">
-      かわいさ<span class="accent">スカウター</span>
-    </h1>
-    <div class="localTag">LOCAL AI</div>
-  </div>
-</div>
-</div>
-</div>
+      <div class="titleRow">
+        <h1 class="title">
+          かわいさ<span class="accent">スカウター</span>
+        </h1>
+        <div class="localTag">LOCAL AI</div>
       </div>
+
       <p class="sub">
         ※画像はこの端末内で解析（外部送信しません）。本人の同意がある画像のみ使用してください。
       </p>
@@ -55,8 +51,17 @@
         </div>
 
         <div class="resultRow">
+          <div class="resultLabel">判定</div>
+          <div class="resultValue">
+            <span id="rank">---</span>
+          </div>
+        </div>
+
+        <div class="resultRow">
           <div class="resultLabel">推定スコア</div>
-          <div class="resultValue"><span id="power">---</span><span class="unit">pt</span></div>
+          <div class="resultValue">
+            <span id="power">---</span><span class="unit">pt</span>
+          </div>
         </div>
 
         <div class="facts">
