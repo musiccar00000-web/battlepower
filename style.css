@@ -1,20 +1,49 @@
 body {
   background: #0f172a;
   color: white;
-  font-family: sans-serif;
-  text-align: center;
-  padding: 40px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", sans-serif;
+  margin: 0;
 }
 
-h1 {
-  font-size: 28px;
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+h1 { font-size: 26px; margin: 6px 0 10px; }
+
+.note { opacity: 0.85; font-size: 13px; line-height: 1.4; }
+
+.card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 14px;
+  padding: 14px;
+  margin: 12px 0;
 }
 
 button {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 0;
   background: #2563eb;
   color: white;
-  font-size: 16px;
+  font-weight: 700;
 }
+
+button:disabled { opacity: 0.45; }
+
+.status { margin-top: 10px; opacity: 0.85; font-size: 13px; }
+
+canvas {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.25);
+}
+
+.result { margin-top: 10px; }
+.power { font-size: 22px; font-weight: 800; }
+.small { opacity: 0.85; font-size: 13px; margin-top: 6px; }
