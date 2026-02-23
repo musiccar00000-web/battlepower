@@ -298,3 +298,40 @@ canvas{
   80%{opacity:.8}
   100%{transform:translateY(600px);opacity:0}
 }
+/* --- Title (Center) + LOCAL AI (Right) --- */
+.titleRow{
+  position:relative;
+  margin: 22px 0 10px;
+  padding:32px 24px 48px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(135deg, rgba(124,247,255,.08), rgba(155,123,255,.08));
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  text-align:center;
+}
+
+.title{
+  font-size:clamp(28px,7vw,44px);
+  font-weight:900;
+  letter-spacing:.08em;
+  margin:0;
+  background:linear-gradient(90deg,#ffffff,#7cf7ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.title .accent{
+  background:linear-gradient(90deg,#7cf7ff,#9b7bff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.localTag{
+  position:absolute;
+  right:24px;
+  bottom:16px;
+  font-size:12px;
+  letter-spacing:.15em;
+  color:rgba(255,255,255,.55);
+  font-weight:600;
+}
