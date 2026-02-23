@@ -25,10 +25,9 @@ function setMeter(v01, label) {
   const pct = Math.round(v * 100);
   meterFill.style.width = pct + "%";
 
-  // 針はバー幅に合わせて移動（6px〜(100%-6px)）
-  const bar = meterFill.parentElement.getBoundingClientRect();
-  const x = 6 + (bar.width - 12) * v;
-  meterNeedle.style.transform = `translateX(${x}px)`;
+  // 針を left で動かす（親の幅に合わせて%で）
+  // バーの左右余白 6px ぶんは CSS側で固定してるので、ここは%だけでOK
+  meterNeedle.style.left = `calc(6px + (100% - 12px) * ${v})`;
 
   meterValue.textContent = label ?? (pct + "%");
 }
