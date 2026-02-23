@@ -6,12 +6,31 @@
   <title>戦闘力スキャナ</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <main class="wrap">
     <h1>戦闘力スキャナ</h1>
-    <p>ここにアプリの中身が表示されます</p>
-    <button onclick="randomPower()">戦闘力を測定</button>
-<script src="app.js"></script>
+    <p class="note">
+      ※画像はこの端末内で解析（外部送信しません）。本人の同意がある画像のみ使用してください。
+    </p>
+
+    <div class="card">
+      <input id="file" type="file" accept="image/*" />
+      <button id="scan" disabled>戦闘力を測定</button>
+      <div id="status" class="status">準備中…</div>
+    </div>
+
+    <div class="card">
+      <canvas id="canvas"></canvas>
+      <div class="result">
+        <div class="power">
+          戦闘力：<span id="power">---</span>
+        </div>
+        <div class="small" id="detail"></div>
+      </div>
+    </div>
   </main>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
